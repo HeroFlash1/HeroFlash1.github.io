@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Для тебя</title>
+    <style>
+        :root {
+            --bg-color: #fff0f3;
+            --main-pink: #ff4d6d;
+            --dark-pink: #c9184a;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+
+        /* Конверт */
+        .envelope-wrapper {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.5s ease;
+        }
+
+        .envelope-wrapper:hover {
+            transform: scale(1.05);
+        }
+
+        .envelope {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background: var(--main-pink);
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            z-index: 2;
+            border-top: 110px solid #ff758f;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            transform-origin: top;
+            transition: all 0.5s ease;
+        }
+
+        .envelope::after {
+            content: '';
+            position: absolute;
+            z-index: 2;
+            width: 0;
+            height: 0;
+            border-top: 100px solid transparent;
+            border-left: 150px solid #ff8fa3;
+            border-right: 150px solid #ff8fa3;
+            border-bottom: 100px solid #ff8fa3;
+            bottom: 0;
+            border-radius: 0 0 10px 10px;
+        }
+
+        /* Письмо внутри */
+        .letter {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 85%;
+            height: 100%;
+            background: white;
+            padding: 20px;
+            box-sizing: border-box;
+            transition: all 0.5s ease;
+            z-index: 1;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .letter h1 {
+            font-size: 22px;
+            color: var(--dark-pink);
+            margin-bottom: 10px;
+        }
+
+        .letter p {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* Состояние при открытии */
+        .active .envelope::before {
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+
+        .active .letter {
+            bottom: 120px;
+            height: 180px;
+            z-index: 3;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        /* Сердечки */
+        .heart {
+            position: absolute;
+            pointer-events: none;
+            color: var(--main-pink);
+            animation: fly 3s linear forwards;
+        }
+
+        @keyframes fly {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-500px) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="envelope-wrapper" id="envelope">
+        <div class="envelope">
+            <div class="letter">
+                <h1>I Love You So</h1>
+                <p>But I love you so (ooh-ooh-ooh) <br> I love you so (ooh-ooh-ooh)</b><br>I love you so</b><br>Я просто хотел сказать,<br>что ты — моё всё. ❤️</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const envelope = document.getElementById('envelope');
+        
+        envelope.addEventListener('click', () => {
+            envelope.classList.toggle('active');
+            if(envelope.classList.contains('active')) {
+                createHearts();
+            }
+        });
+
+        function createHearts() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerHTML = '❤️';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.top = '100vh';
+                    heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => heart.remove(), 3000);
+                }, i * 150);
+            }
+        }
+    </script>
+</body>
+</html>
